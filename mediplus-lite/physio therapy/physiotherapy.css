@@ -1,0 +1,234 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+header {
+    background-color: #B6C7AA;
+    color: #74512D;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    border-bottom: 5px solid #E7D4B5;
+}
+
+nav {
+    background-color: #74512D;
+    padding: 1rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+nav ul li {
+    margin: 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #E7D4B5;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+nav ul li a.active, nav ul li a:hover {
+    background-color: #B6C7AA;
+    color: #74512D;
+    border-radius: 5px;
+}
+
+
+h1 {
+    font-size: 3rem;
+    margin: 2rem 0 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+#search-bar {
+    width: 80%;
+    max-width: 600px;
+    padding: 0.5rem;
+    border: 2px solid #74512D;
+    border-radius: 30px;
+    font-size: 1rem;
+    margin: 1rem auto;
+    display: block;
+    transition: border-color 0.3s;
+}
+
+#search-bar:focus {
+    border-color: #B6C7AA;
+    outline: none;
+}
+
+.therapy-types {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.therapy-card {
+    background-color: #E7D4B5;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.4s, box-shadow 0.4s;
+    position: relative;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.therapy-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.therapy-card img, .therapy-card video {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 5px solid #74512D;
+}
+
+.therapy-card h2 {
+    text-align: center;
+    padding: 1rem;
+    background-color: #74512D;
+    color: #f2f2f2;
+    font-size: 2rem;
+    margin: 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.therapy-card p {
+    padding: 1rem;
+    font-size: 1.1rem;
+    color: #333;
+    text-align: center;
+}
+
+.therapy-card button {
+    display: block;
+    margin: 1rem auto;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    background-color: #74512D;
+    color: #f2f2f2;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.therapy-card button:hover {
+    background-color: #B6C7AA;
+    transform: scale(1.05);
+}
+
+footer {
+    background-color: #74512D;
+    color: #E7D4B5;
+    text-align: center;
+    padding: 1.5rem 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: 2rem;
+    border-top: 5px solid #E7D4B5;
+}
+
+footer p {
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); 
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto; 
+    padding: 2rem;
+    border: 1px solid #888;
+    width: 80%; 
+    max-width: 600px; 
+    border-radius: 15px;
+    position: relative;
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 2rem;
+    color: #74512D;
+}
+
+.modal-content p {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    #search-bar {
+        width: 90%;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+}

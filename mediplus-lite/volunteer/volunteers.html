@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Volunteers - Elderly Aura</title>
+    <link rel="stylesheet" href="styles volunteer.css">
+</head>
+<body>
+    <header>
+        <h1>Available Volunteers</h1>
+    </header>
+
+    <section id="volunteerList">
+        <!-- Volunteers will be displayed here dynamically -->
+    </section>
+
+    <footer>
+        <p>© 2024 Elderly Aura | Creative Footer Design</p>
+    </footer>
+
+    <script>
+        window.onload = function() {
+            const volunteerList = document.getElementById('volunteerList');
+            let volunteers = JSON.parse(localStorage.getItem('volunteers')) || [];
+
+            if (volunteers.length === 0) {
+                volunteerList.innerHTML = '<p>No volunteers available yet.</p>';
+            } else {
+                volunteers.forEach((volunteer, index) => {
+                    const volunteerCard = document.createElement('div');
+                    volunteerCard.classList.add('volunteer-card');
+
+                    volunteerCard.innerHTML = `
+                        <h3>${volunteer.name}</h3>
+                        <p>Age: ${volunteer.age}</p>
+                        <p>Phone: ${volunteer.phone}</p>
+                        <p>Email: ${volunteer.email}</p>
+                        <p>Skills: ${volunteer.skills}</p>
+                        <p>Available Hours: ${volunteer.hours}</p>
+                        <p>Available Date: ${volunteer.date}</p>
+                        <img src="${volunteer.photoURL}" alt="${volunteer.name}'s photo" width="150" height="150">
+                        <button class="bookBtn" data-index="${index}">Book Now</button>
+                    `;
+
+                    volunteerList.appendChild(volunteerCard);
+                });
+            }
+
+            document.querySelectorAll('.bookBtn').forEach(button => {
+                button.addEventListener('click', function() {
+                    alert('Other information will be shared soon');
+                    const index = this.getAttribute('data-index');
+                    const email = volunteers[index].email;
+
+                    // Simulate sending email
+                    console.log(`Sending email to: ${email}`);
+
+                    // Remove booked volunteer
+                    volunteers.splice(index, 1);
+                    localStorage.setItem('volunteers', JSON.stringify(volunteers));
+                    window.location.reload();
+                });
+            });
+        };
+    </script>
+</body>
+</html>
