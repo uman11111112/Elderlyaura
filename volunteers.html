@@ -49,17 +49,15 @@
 
             document.querySelectorAll('.bookBtn').forEach(button => {
                 button.addEventListener('click', function() {
-                    alert('Other information will be shared soon');
                     const index = this.getAttribute('data-index');
-                    const email = volunteers[index].email;
+                    const googleFormURL = 'https://docs.google.com/forms/d/e/1FAIpQLSebPyIjCtW5nM2RspiDKZtJe0cuggDJPJ69bAqAc0-RbAsCxQ/viewform?usp=sf_link'; // Replace with your actual Google Form URL
 
-                    // Simulate sending email
-                    console.log(`Sending email to: ${email}`);
+                    // Redirect to Google Form
+                    window.location.href = googleFormURL;
 
-                    // Remove booked volunteer
+                    // Optional: remove booked volunteer from the list and localStorage
                     volunteers.splice(index, 1);
                     localStorage.setItem('volunteers', JSON.stringify(volunteers));
-                    window.location.reload();
                 });
             });
         };
