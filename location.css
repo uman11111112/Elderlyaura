@@ -1,0 +1,231 @@
+/* Importing Google font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+/* Defining Custom Variables */
+:root {
+    /* Colors */
+    --primary-color: #B6C7AA;
+    --secondary-color: #74512D;
+    --dark-color: #E7D4B5;
+    --white-color: #A67B5B;
+    --light-gray-color: #f2f2f2;
+
+    /* Site Max-Width */
+    --site-max-width: 1300px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--white-color);
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Navbar Styling */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    background: var(--primary-color);
+}
+
+nav {
+    display: flex;
+    padding: 15px 0;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    max-width: var(--site-max-width);
+}
+
+nav .nav_logo a {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+nav .nav_logo a img {
+    max-width: 20px;
+}
+
+nav .nav_logo h2 {
+    color: var(--white-color);
+    font-weight: 600;
+    font-size: 32px;
+}
+
+nav ul {
+    display: flex;
+    gap: 10px;
+}
+
+nav ul li a {
+    display: block;
+    padding: 10px 25px;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--white-color);
+    border-radius: 30px;
+    transition: all 0.2s ease;
+}
+
+nav ul li a:hover {
+    color: var(--primary-color);
+    background-color: var(--secondary-color);
+}
+
+nav label {
+    font-size: 32px;
+    color: var(--white-color);
+    cursor: pointer;
+}
+
+label .menu_btn,
+label .close_btn {
+    display: none;
+}
+
+#click {
+    display: none;
+}
+
+/* Main Section for Map and Sidebar */
+.map-container {
+    display: flex;
+    gap: 20px;
+    margin: 100px auto 20px;
+    max-width: var(--site-max-width);
+}
+
+#map {
+    height: 500px;
+    width: 75%;
+    border-radius: 8px;
+}
+
+.sidebar {
+    width: 25%;
+    background: var(--dark-color);
+    color: var(--white-color);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.sidebar h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.sidebar ul li:hover {
+    text-decoration: underline;
+}
+
+/* Footer Section */
+footer {
+    background: #1b1b1b;
+    color: var(--white-color);
+    padding: 60px 20px;
+}
+
+.footer_section {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: var(--site-max-width);
+    margin: 0 auto;
+}
+
+.footer_section .footer_logo a {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.footer_section .footer_logo img {
+    max-width: 50px;
+}
+
+.footer_section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer_section ul li {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.footer_section ul li i {
+    margin-right: 10px;
+}
+
+.footer_section .follow_us i {
+    font-size: 24px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.footer_section .follow_us i:hover {
+    color: var(--primary-color);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+    nav {
+        flex-direction: column;
+    }
+
+    nav ul {
+        display: none;
+        position: fixed;
+        left: -100%;
+        background: var(--primary-color);
+        height: 100vh;
+        width: 300px;
+        top: 0;
+        gap: 20px;
+        padding: 100px 20px;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+        transition: all 0.4s ease;
+    }
+
+    nav ul li a {
+        font-size: 22px;
+    }
+
+    #click:checked ~ ul {
+        left: 0;
+    }
+
+    label .close_btn {
+        display: block;
+        position: fixed;
+        top: 10px;
+        left: 20px;
+        font-size: 40px;
+    }
+
+    label .menu_btn {
+        display: block;
+    }
+}

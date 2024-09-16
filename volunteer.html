@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Registration - Elderly Aura</title>
+    <link rel="stylesheet" href="styles volunteer.css">
+</head>
+<body>
+    <header>
+        <h1>Register as a Volunteer</h1>
+    </header>
+
+    <section class="form-section">
+        <form id="volunteerForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+
+            <label for="photo">Upload Photo:</label>
+            <input type="file" id="photo" name="photo" accept="image/*">
+
+            <label for="capture">Or Capture Photo:</label>
+            <button type="button" id="captureBtn">Capture Image</button>
+            <video id="video" width="320" height="240" autoplay style="display:none;"></video>
+            <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="skills">Skills:</label>
+            <input type="text" id="skills" name="skills" required>
+
+            <label for="hours">Available Hours:</label>
+            <input type="text" id="hours" name="hours" required>
+
+            <label for="date">Availability Date:</label>
+            <input type="date" id="date" name="date" required>
+
+            <button type="submit" id="registerBtn">Register</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>© 2024 Elderly Aura | Creative Footer Design</p>
+    </footer>
+
+    <script>
+        const captureBtn = document.getElementById('captureBtn');
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        let capturedImage = '';
+
+        // Capture image using camera
+        captureBtn.addEventListener('click', function() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.style.display = 'block';
+                    video.srcObject = stream;
+                    captureBtn.textContent = 'Capture';
+
+                    captureBtn.onclick = function() {
+                        const context = canvas.getContext('2d');
+                        canvas.style.display = 'block';
+                        context.drawImage(video, 0, 0, 320, 240);
+                        capturedImage = canvas.toDataURL('image/png');
+                        video.style.display = 'none';
+                        video.srcObject.getTracks().forEach(track => track.stop());
+                    };
+                });
+        });
+
+        // Handle form submission and save data including image
+        document.getElementById('volunteerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const skills = document.getElementById('skills').value;
+            const hours = document.getElementById('hours').value;
+            const date = document.getElementById('date').value;
+            const photoFile = document.getElementById('photo').files[0];
+
+            let photoURL = capturedImage;
+
+            // Handle uploaded photo
+            if (!photoURL && photoFile) {
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    photoURL = reader.result;
+                    saveVolunteer({ name, age, phone, email, skills, hours, date, photoURL });
+                };
+                reader.readAsDataURL(photoFile);
+            } else {
+                saveVolunteer({ name, age, phone, email, skills, hours, date, photoURL });
+            }
+        });
+
+        function saveVolunteer(volunteer) {
+            let volunteers = JSON.parse(localStorage.getItem('volunteers')) || [];
+            volunteers.push(volunteer);
+            localStorage.setItem('volunteers', JSON.stringify(volunteers));
+
+            // Redirect to volunteers.html
+            window.location.href = 'volunteers.html';
+        }
+    </script>
+</body>
+</html>
