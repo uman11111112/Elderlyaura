@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nearby Chemist Stores & Hospitals</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        /* Navigation Bar */
+        header {
+            width: 100%;
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        header ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        header ul li {
+            position: relative;
+        }
+
+        header ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        header ul li a:hover {
+            background-color: #555;
+        }
+
+        /* Sidebar for the list of places */
+        .sidebar {
+            width: 25%;
+            background-color: #fff;
+            padding: 15px;
+            border-right: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            margin-top: 60px; /* Adjusted for the fixed header */
+        }
+
+        .sidebar h2 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .sidebar table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .sidebar table, .sidebar th, .sidebar td {
+            border: 1px solid #ddd;
+        }
+
+        .sidebar th, .sidebar td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .sidebar th {
+            background-color: #f8f8f8;
+        }
+
+        .sidebar td {
+            background-color: #fff;
+        }
+
+        .sidebar td a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .sidebar td a:hover {
+            text-decoration: underline;
+        }
+
+        /* Map container */
+        #map {
+            flex-grow: 1;
+            height: 100%;
+            margin-top: 60px; /* Adjusted for the fixed header */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="sidebar">
+        <h2>Nearby Chemist Stores & Hospitals</h2>
+        <table id="placesTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Nearby places will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+    <div id="map"></div>
+
+    <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.22.0/maps/maps-web.min.js"></script>
+    <script>
+        const apiKey = 'Pr7ELtvBAAwkED9sbLE0yUbSaUy2Xw8R';  // Replace with your TomTom API Key
+
+        function initMap() {
+            // Create the map
+            var map = tt.map({
+                key: apiKey,
+                container: 'map',
+                center: [0, 0], // Default center (updated once we get user location)
+                zoom: 14
+            });
+
+            // Get user location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    const userLocation = [position.coords.longitude, position.coords.latitude];
+                    map.setCenter(userLocation);
+
+                    // Add a marker for user's location
+                    new tt.Marker().setLngLat(userLocation).addTo(map);
+
+                    // Example: Add custom markers manually based on predefined coordinates
+                    const markerLocations = [
+                        [77.5946, 12.9716], // Add your custom coordinates here
+                        [77.5947, 12.9717],
+                        [77.5950, 12.9719]
+                        // Add more markers as needed
+                    ];
+
+                    markerLocations.forEach(location => {
+                        new tt.Marker().setLngLat(location).addTo(map);
+                    });
+
+                    // Find nearby chemists and hospitals
+                    searchNearby(userLocation, map);
+                });
+            } else {
+                alert("Geolocation is not supported by your browser.");
+            }
+        }
+
+        function searchNearby(location, map) {
+            const searchUrl = `https://api.tomtom.com/search/2/nearbySearch/.json?key=${apiKey}&lat=${location[1]}&lon=${location[0]}&categorySet=7321,7322&radius=5000`;
+
+            fetch(searchUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.results && data.results.length > 0) {
+                        data.results.forEach(place => {
+                            const marker = new tt.Marker().setLngLat([place.position.lon, place.position.lat]).addTo(map);
+                            
+                            // Create a popup for each place
+                            const popup = new tt.Popup({ offset: 35 }).setHTML(`<h3>${place.poi.name}</h3><p>${place.address.freeformAddress}</p>`);
+                            marker.setPopup(popup);
+
+                            // Add the place to the sidebar table
+                            addPlaceToTable(place);
+                        });
+                    } else {
+                        alert('No nearby chemist stores or hospitals found.');
+                    }
+                })
+                .catch(error => console.error('Error fetching places:', error));
+        }
+
+        function addPlaceToTable(place) {
+            const tableBody = document.querySelector('#placesTable tbody');
+            const row = document.createElement('tr');
+            const nameCell = document.createElement('td');
+            const addressCell = document.createElement('td');
+
+            nameCell.innerHTML = `<a href="javascript:void(0)" onclick="flyToPlace(${place.position.lon}, ${place.position.lat})">${place.poi.name}</a>`;
+            addressCell.textContent = place.address.freeformAddress;
+
+            row.appendChild(nameCell);
+            row.appendChild(addressCell);
+            tableBody.appendChild(row);
+        }
+
+        function flyToPlace(lon, lat) {
+            const map = tt.map({
+                key: apiKey,
+                container: 'map',
+                center: [lon, lat],
+                zoom: 15
+            });
+
+            // Fly to the selected place
+            map.flyTo({
+                center: [lon, lat],
+                zoom: 15
+            });
+
+            // Add a marker to the selected location
+            new tt.Marker().setLngLat([lon, lat]).addTo(map);
+        }
+
+        initMap();
+    </script>
+</body>
+</html>
