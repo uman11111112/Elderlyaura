@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elderly Aura Alarm System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Elderly Aura - Alarm System</h1>
+    
+    <form id="alarmForm">
+        <label for="time">Set Alarm Time:</label>
+        <input type="datetime-local" id="time" required>
+        <label for="message">Alarm Message:</label>
+        <input type="text" id="message" required>
+        <label for="sound">Select Alarm Sound:</label>
+        <select id="sound">
+            <option value="alarm1.mp3">Sound 1</option>
+            <option value="alarm2.mp3">Sound 2</option>
+            <option value="alarm3.mp3">Sound 3</option>
+        </select>
+        <button type="submit">Set Alarm</button>
+    </form>
+
+    <table id="alarmTable">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Message</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="alarmBody">
+            <!-- Alarms will be listed here -->
+        </tbody>
+    </table>
+
+    <!-- Audio elements for alarm sounds -->
+    <audio id="alarmSound1" src="alarm.mp3" preload="auto"></audio>
+    <audio id="alarmSound2" src="alarm.mp3" preload="auto"></audio>
+    <audio id="alarmSound3" src="alarm.mp3" preload="auto"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
